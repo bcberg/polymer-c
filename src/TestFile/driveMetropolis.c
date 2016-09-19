@@ -15,6 +15,8 @@
 #define MULTIPLE 0
 #define STIFFEN  1
 #define CPMAX    1e8
+#define TALKATIVE 0
+#define LEGACYINPUT 1
 
 #include <math.h>
 #include <stdlib.h>
@@ -128,7 +130,7 @@ int main( int argc, char *argv[] )
     Force = 0;
     if(argv[5]) // Force - Units of kBT/[kuhn length]
         Force = atof(argv[5]);
-    printf("This is argument 5: %f\n", Force);
+    if(TALKATIVE) printf("This is argument 5: %f\n", Force);
     
     // IF verboseTF = 0, one line summarizing the run is written to the file listName.
     // IF verboseTF = 1, one line is written each iteration to the file listName. (Use for making histograms).

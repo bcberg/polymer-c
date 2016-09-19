@@ -42,8 +42,8 @@ void finalizeSummary()
 	
     for(iy=0;iy<iSiteTotal;iy++)
     {
-    POcclude[iy] = (double)POcclude_sum[iy]/(double)(nt-NTCHECK);
-    Prvec0[iy] = (double)Prvec0_sum[iy]/(4/3*PI*pow((double)N/(double)NBINS,3))/(double)(nt-NTCHECK);
+        POcclude[iy] = (double)POcclude_sum[iy]/(double)(nt-NTCHECK);
+        Prvec0[iy] = (double)Prvec0_sum[iy]/(4/3*PI*pow((double)N/(double)NBINS,3))/(double)(nt-NTCHECK);
     }
     
     POccludeBase = (double)POccludeBase_sum/(double)(nt-NTCHECK);
