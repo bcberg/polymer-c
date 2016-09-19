@@ -20,8 +20,8 @@ void initializeSummary()
     ree2Bar_sum  = 0;
     for(iy=0;iy<iSiteTotal;iy++)
     {
-    POcclude_sum[iy] = 0;
-    Prvec0_sum[iy]   = 0;
+        POcclude_sum[iy] = 0;
+        Prvec0_sum[iy]   = 0;
     }
     POccludeBase_sum = 0;
 //    for(ib=0; ib<bSiteTotal; ib++)
@@ -59,35 +59,32 @@ void finalizeSummary()
     {
         fList = fopen(listName, "a");
         
-        //set joints to stiff based on which iSites are occupied and the stiffness range
-        if (STIFFEN) //stiffen only if StiffenRange is 0 or greater
+        
+        if (CD3ZETA)
         {
-            fprintf(fList, "%s %s ",phosphorylatediSites,
-                    phosphorylatediSitesNoSpace);
+            fprintf(fList, "%s %s ",occupiedSites,
+                        occupiedSitesNoSpace);
         }
         
         fprintf(fList, "%ld %f %f %f %ld %f %f %f %e",
-
-                
                 N,           // 1
-                irLigand,     // 2
-                brLigand,   //3
+                irLigand,    // 2
+                brLigand,    // 3
                 Force,       // 4
                 nt,          // 5
                 ksStatistic, // 6
                 reeBar,      // 7
                 ree2Bar,     // 8
-                rMBar);       //9
+                rMBar);      // 9
         
         for (iy=0;iy<iSiteTotal;iy++)
         {
             fprintf(fList, " %ld %e %e %e",
-                    
                 iSite[iy], //10 + 4*iBind
                 POcclude[iy], //11 + 4*iBind
                 1-POcclude[iy], //12 + 4*iBind
                 Prvec0[iy]); //13 + 4*iBind
-                    
+        
         }
         
         fprintf(fList, " %d %e %e", -1, POccludeBase, 1-POccludeBase);
@@ -95,11 +92,9 @@ void finalizeSummary()
         for (ib=0;ib<bSiteTotal;ib++)
         {
             fprintf(fList, " %ld",
-                    
-                    bSite[ib]);
+                bSite[ib]);
                     //PDeliver[ib]);
-                    
-                    }
+        }
         
         fprintf(fList, "\n");
         fclose(fList);
@@ -151,26 +146,35 @@ void dataRecording()
                 dChi[1],          // 7
                 rate[0],          // 8
                 rate[1],          // 9
-                ksStatistic,     // 10
-        constraintProposalsTotal);    //11
+                ksStatistic,      // 10
+        		constraintProposalsTotal);// 11
+            
+             if (VISUALIZE)
+             {
+                for (i=0;i<N;i++)
+                {
+                    fprintf(fList, " %f %f %f", r[i][0],r[i][1],r[i][2]);
+                    fprintf(fList, " %f %f %f", phi[i],theta[i],psi[i]);
+                }
+             }
         
-        for(iy=0;iy<iSiteTotal;iy++)
-        {
-            fprintf(fList, " %ld",stericOcclusion[iy]);
-        }
+            for(iy=0;iy<iSiteTotal;iy++)
+            {
+                fprintf(fList, " %ld",stericOcclusion[iy]);
+            }
         
-        fprintf(fList, " %ld", stericOcclusionBase);
+            fprintf(fList, " %ld", stericOcclusionBase);
         
 //        for(ib=0;ib<bSiteTotal;ib++)
 //        {
 //            fprintf(fList, " %ld", boundToBaseDeliver[ib]);
 //        }
         
-        fprintf(fList, "\n");
+            fprintf(fList, "\n");
 
-        fclose(fList);
+            fclose(fList);
         }
-    }
+    } // finished verbose output
     
     if (nt>NTCHECK)
     {
