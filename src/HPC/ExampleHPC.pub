@@ -1,0 +1,49 @@
+#!/bin/bash
+#$ -N CD3ZetaMembraneAssociation
+#$ -t 1-201
+#$ -q abio,bio
+#$ -ckpt restart
+#$ -e Data/logs/
+#$ -o Data/logs/
+
+#################################
+# Explanation of above options:
+# N - name of job
+# t - determines number of tasks in task array, consecutive starting from 1 only, access ID of individual task with environmental variable SGE_TASK_ID
+# q - queues to submit to - abio and bio do not have wall clock limits, free* and pub* have 3-day clock limits, inspect queues available to user with
+# ckpt restart - restarts jobs from the beginning if job gets suspended (often faster than waiting for end of suspension)
+# e - create error files, put them in subdirectory Data/logs/ (be sure appropriate directory exists in folder)
+# o - create log file (includes anything printed to command line), put them in subdirectory Data/logs/
+#################################
+
+
+#################################
+# Location of run directory
+cd /pub/lclemens/polymer-c_runs/MembraneAssociation/20190417MembraneAssocationCD3ZetaMembraneOnEB0Sweep
+
+# Print host, start time, and directory
+echo Running on host `hostname`
+echo Time is `date`
+echo Directory is `pwd`
+
+#################################
+# EDIT PER RUN
+
+fileName="CD3ZetaMembraneAssociation.EB0"; # command line
+
+ZREPULSION=3;
+WALLPARABOLAK=0.05;
+PARABOLADEPTH=$( awk -v er="$(($SGE_TASK_ID - 1))" 'BEGIN{print 10**((-6 + (er/25)))}' );
+PARABOLAWIDTH=$( awk -v pd="$PARABOLADEPTH" 'BEGIN{print (pd/9)}' );
+
+EREPULSION=0;
+#################################
+# check if output file already exists, if not, run executable
+if [ ! -e Data/$fileName.$SGE_TASK_ID ]
+    then
+    # Run your executable: executable, parameters file, output subdirectory/filename, command line parameters...
+    ./metropolis.out parameters.txt Data/$fileName.$SGE_TASK_ID -1 -1 $PARABOLADEPTH $PARABOLAWIDTH $WALLPARABOLAK $EREPULSION $ZREPULSION
+fi
+
+# Print end time
+echo Finished at `date`
