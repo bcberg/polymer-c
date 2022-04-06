@@ -187,21 +187,21 @@ int main( int argc, char *argv[] )
             NFil = atof(argv[4]);
         if (TALKATIVE) printf("This is the number of filaments: %ld\n", NFil);
     }
-    
+
     if(argv[5])
     {
         if(atoi(argv[5])!=-1)
             Ntemp = atof(argv[5]);
         if (TALKATIVE) printf("This is the filament length: %ld\n", Ntemp);
     }
-    
+
     if(argv[6])
     {
         if(atoi(argv[6])!=-1)
             iSiteTemp = atof(argv[6]);
         if (TALKATIVE) printf("This is the location of the iSite: %ld\n", iSiteTemp);
     }
-    
+
     if(argv[7])
     {
         if(atoi(argv[7])!=-1)
@@ -215,24 +215,24 @@ int main( int argc, char *argv[] )
             Force = atof(argv[8]);
         if (TALKATIVE) printf("This is the force: %lf\n", Force);
     }
-    
+
     if(argv[9])
     {
         if(atoi(argv[9])!=-1)
             kdimer = atof(argv[9]);
         if (TALKATIVE) printf("This is the dimerization force: %lf\n", kdimer);
     }
-    
-    
+
+
     /***********************************************************************************/
     /********* INITIALIZE FILAMENTS, ISITES, BSITES, AND BASIC SITES *******************/
     /***********************************************************************************/
-    
+
     // filaments
     getFilaments();
     // iSites, bSites
     getSites();
-    
+
     if(ELECTRO)
     {
         // basic sites
@@ -241,13 +241,13 @@ int main( int argc, char *argv[] )
 
     /***********************************************************************************/
     /******************************* FINISH INITIALIZING *******************************/
-    
+
     // parse OccupiedSites
     for (i=0; i<NumberiSites; i++)
     {
         occupied[i]=0;
     }
-    
+
     i=0;
     char * linepart;
     linepart = strtok(occupiedSites,"_");
@@ -257,15 +257,15 @@ int main( int argc, char *argv[] )
         linepart = strtok(NULL, "_");
         i++;
     }
-    
+
     /***********************************************************************************/
     // initialize random seed
 	iseed = RanInitReturnIseed(0);
-	
+
     /***********************************************************************************/
     // run metropolis algorithm
 	metropolisJoint();
 
 	return 0;
-	
+
 } // finished main
