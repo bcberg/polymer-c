@@ -192,16 +192,16 @@ driveMetropolis.c
                                     Boolean setting if output is verbose or summary
                                     overriden if there is an argv[3]
                                 iSiteInputMethod
-                                    	Method used in getSites to decide where iSites are located
-                                        0 - iSites initialized for human CD3Zeta-Chain
-                                        1 - set identical filament single iSite - use command line input
-                                        2 - input iSites from file
-                                        3 - use last site as only iSite
-                                        4 - use every site as iSite
+                                    Method used in getSites to decide where iSites are located
+                                    0 - iSites initialized for human CD3Zeta-Chain
+                                    1 - set identical filament single iSite - use command line input
+                                    2 - input iSites from file
+                                    3 - use last site as only iSite
+                                    4 - use every site as iSite
                                 stiffCase		
                                     not used anymore
                                 occupiedSites	
-                                    	String to determine which of the 6 CD3Zeta iSites are 'phosphorylated'
+                                    String to determine which of the 6 CD3Zeta iSites are 'phosphorylated'
                                 occupiedSitesNoSpace 
                                     String used in output to determine which CD3Zeta iSites are 'phosphorylated'	
                                 bSiteInputMethod
