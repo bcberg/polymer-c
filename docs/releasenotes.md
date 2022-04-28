@@ -1,1 +1,0 @@
-Polymer-c folder organization
