@@ -30,21 +30,23 @@ sed -i "34c\ ./metropolis.out parameters.txt output_${what}.N${NumSeg}.iSite${iS
 " "submit.${what}.N${NumSeg}.${d}.sh"
 done
 
-cd /u/home/k/katiebog/Data/
+cd /u/home/k/katiebog/GitHub/Data/polymer-c_data
 mkdir single.${d}
 
 for NumSeg in $(seq 1 300)
 do
-cd /u/home/k/katiebog/Data/single.${d}
+cd /u/home/k/katiebog/GitHub/Data/polymer-c_data/single.${d}
 mkdir run.${what}.N${NumSeg}_${d}
-cd /u/home/k/katiebog/test/src/PolymerCode
-cp metropolis.out parameters.txt ISEED submit.${what}.N${NumSeg}.${d}.sh /u/home/k/katiebog/Data/single.${d}/run.${what}.N${NumSeg}_${d}
-cd /u/home/k/katiebog/test/src/PolymerCode
+cd /u/home/k/katiebog/GitHub/polymer-c/src/PolymerCode
+cp metropolis.out parameters.txt ISEED /u/home/k/katiebog/GitHub/Data/polymer-c_data/single.${d}/run.${what}.N${NumSeg}_${d}
+cd /u/home/k/katiebog/GitHub/polymer-c/drivers
+cp submit.${what}.N${NumSeg}.${d}.sh /u/home/k/katiebog/GitHub/Data/polymer-c_data/single.${d}/run.${what}.N${NumSeg}_${d}
+cd /u/home/k/katiebog/GitHub/polymer-c/drivers
 rm submit.${what}.N${NumSeg}.${d}.sh
 done
 
 for NumSeg in $(seq 1 300)
 do
-cd /u/home/k/katiebog/Data/single.${d}/run.${what}.N${NumSeg}_${d}
+cd /u/home/k/katiebog/GitHub/Data/polymer-c_data/single.${d}/run.${what}.N${NumSeg}_${d}
 qsub ./submit.${what}.N${NumSeg}.${d}.sh
 done
