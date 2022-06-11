@@ -186,7 +186,12 @@ void finalizeSummary()
     if (!verboseTF)
     {
         fList = fopen(listName, "a");
-
+        // fprintf(fList, "%s %f", "Prvec0 at position 24:", Prvec0[0][24]);
+        // fprintf(fList, "\n");
+        // fprintf(fList, "%s %f", "Prvec0 at position 43:", Prvec0[0][43]);
+        // fprintf(fList, "\n");
+        // fprintf(fList, "%s %f", "Prvec0 at position 59:", Prvec0[0][59]);
+        // fprintf(fList, "\n");
         // formulas only work for identical filaments
         fprintf(fList, "%ld %ld %f %f %f %f %f %f",
                 nt,         // 1
