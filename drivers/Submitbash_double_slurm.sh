@@ -2,11 +2,11 @@
 #./metropolis.out parameters.txt outputfile verboseTF NFil N iSite baseSepDist Force dimerForce
 
 d=`date +%Y.%d.%m`
-#d='2023.14.01'
+#d='2023.15.01'
 
 
 #Edit these parameters:
-for NumSeg in $(seq 201 202)
+for NumSeg in $(seq 350 350)
 do
 what='double' #'single' 'double'
 NFil=2 #2
@@ -33,23 +33,23 @@ sed -i "3c\#SBATCH --job-name=double_${NumSeg}      ## Name of the job.
 " "submit.${what}.N${NumSeg}.${d}.sub"
 done
 
-cd /data/homezvol0/kbogue1/GitHub/Data/polymer-c_data
+cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N
 mkdir double.${d}
 
-for NumSeg in $(seq 201 202)
+for NumSeg in $(seq 350 350)
 do
-cd /data/homezvol0/kbogue1/GitHub/Data/polymer-c_data/double.${d}
+cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}
 mkdir run.${what}.N${NumSeg}_${d}
-cd /data/homezvol0/kbogue1/GitHub/polymer-c/src/PolymerCode
-cp metropolis.out parameters.txt ISEED /data/homezvol0/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
-cd /data/homezvol0/kbogue1/GitHub/polymer-c/drivers
-cp submit.${what}.N${NumSeg}.${d}.sub /data/homezvol0/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
-cd /data/homezvol0/kbogue1/GitHub/polymer-c/drivers
+cd /pub/kbogue1/GitHub/polymer-c/src/PolymerCode
+cp metropolis.out parameters.txt ISEED /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}/run.${what}.N${NumSeg}_${d}
+cd /pub/kbogue1/GitHub/polymer-c/drivers
+cp submit.${what}.N${NumSeg}.${d}.sub /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}/run.${what}.N${NumSeg}_${d}
+cd /pub/kbogue1/GitHub/polymer-c/drivers
 rm submit.${what}.N${NumSeg}.${d}.sub
 done
 
-for NumSeg in $(seq 201 202)
+for NumSeg in $(seq 350 350)
 do
-cd /data/homezvol0/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
+cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}/run.${what}.N${NumSeg}_${d}
 sbatch submit.${what}.N${NumSeg}.${d}.sub
 done
