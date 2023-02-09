@@ -6,7 +6,7 @@ d=`date +%Y.%d.%m`
 
 
 #Edit these parameters:
-for NumSeg in $(seq 350 350)
+for NumSeg in $(seq 455 455)
 do
 what='double' #'single' 'double'
 NFil=2 #2
@@ -36,7 +36,7 @@ done
 cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N
 mkdir double.${d}
 
-for NumSeg in $(seq 350 350)
+for NumSeg in $(seq 455 455)
 do
 cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}
 mkdir run.${what}.N${NumSeg}_${d}
@@ -48,7 +48,7 @@ cd /pub/kbogue1/GitHub/polymer-c/drivers
 rm submit.${what}.N${NumSeg}.${d}.sub
 done
 
-for NumSeg in $(seq 350 350)
+for NumSeg in $(seq 455 455)
 do
 cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}/run.${what}.N${NumSeg}_${d}
 sbatch submit.${what}.N${NumSeg}.${d}.sub
