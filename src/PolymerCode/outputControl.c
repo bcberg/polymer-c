@@ -203,6 +203,16 @@ void finalizeSummary()
                 dimerDist0, // 7
                 baseSepDistance);     // 8
 
+        // fprintf(fList, "\n");
+
+        // fprintf(fList, " %f %ld %ld %e",
+        //         ree2Bar[0], //ree2Bar for the first filament 
+        //         iSiteTotal[0],
+        //         iSiteTotal[0]-1, 
+        //         Prvec0[0][iSiteTotal[0]-1]);  
+
+        
+
         for(i=0;i<=NumberiSites;i++)
         {
             fprintf(fList, " %lf", POcclude_NumSites[i]); // 8 + (i+1)

@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task=1    ## number of cores the job needs
 #SBATCH --error=error_%A_%a.txt ## error log file; %A is job id, %a is array task id
 #SBATCH --output=out_%A_%a.txt  ## output filename
-#SBATCH --time=5-00:00:00          ## time limit for each array task
+#SBATCH --time=14-00:00:00          ## time limit for each array task
 #SBATCH --mail-type=all,time_limit,TIME_LIMIT_50,TIME_LIMIT_90
 #SBATCH --mail-user=kbogue1@uci.edu
 
@@ -21,6 +21,12 @@ pwd
 ## ./metropolis.out parameters.txt outputfilename verbose(should be 0) NFil N iSite(should be -1) baseSepDist(0 for single, 16.667000 for dimer or double) Force(always 0 for these models) dimerForce(10 for dimer)
 
  ./metropolis.out parameters.txt test_output_$i.txt 0 1 $i -1 0 0 0 &>/dev/null
+
+ echo "metropolis finished running"
+
+ rm metropolis.out parameters.txt ISEED
+
+ echo "deleted metropolis.out parameters.txt ISEED"
 
 
 # echo job info on joblog:
