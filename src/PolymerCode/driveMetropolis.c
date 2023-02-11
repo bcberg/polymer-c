@@ -2,7 +2,7 @@
 
 #define TWISTER genrand_real3()
 #define NFILMAX         3
-#define NMAX            601
+#define NMAX            1201
 #define NTMAX           2e9
 #define NTADAPT         20000
 #define NTCHECK         200000
