@@ -203,9 +203,9 @@ void finalizeSummary()
                 dimerDist0, // 7
                 baseSepDistance);     // 8
 
-        fprintf(fList, "\n");
-        fprintf(fList, "%ld",NumberiSites);
-        fprintf(fList, "\n");
+        // fprintf(fList, "\n");
+        // fprintf(fList, "%ld",NumberiSites);
+        // fprintf(fList, "\n");
 
 
         // fprintf(fList, " %f %ld %ld %e",

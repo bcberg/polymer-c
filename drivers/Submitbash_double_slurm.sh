@@ -1,8 +1,10 @@
 #!/bin/bash
 #./metropolis.out parameters.txt outputfile verboseTF NFil N iSite baseSepDist Force dimerForce
 
-d=`date +%Y.%d.%m`
+#d=`date +%Y.%d.%m`
 #d='2023.15.01'
+d=`date +%Y.%d.%m.%T`
+
 
 
 #Edit these parameters:
