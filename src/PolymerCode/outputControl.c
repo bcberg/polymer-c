@@ -204,7 +204,7 @@ void finalizeSummary()
                 baseSepDistance);     // 8
 
         fprintf(fList, "\n");
-        fprintf(fList, "%f",NumberiSites);
+        fprintf(fList, "%ld",NumberiSites);
         fprintf(fList, "\n");
 
 
