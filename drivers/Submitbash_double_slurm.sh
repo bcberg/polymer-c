@@ -6,7 +6,7 @@ d=`date +%Y.%d.%m`
 
 
 #Edit these parameters:
-for NumSeg in $(seq 455 455)
+for NumSeg in $(seq 350 350)
 do
 what='double' #'single' 'double'
 NFil=2 #2
@@ -33,23 +33,23 @@ sed -i "3c\#SBATCH --job-name=double_${NumSeg}      ## Name of the job.
 " "submit.${what}.N${NumSeg}.${d}.sub"
 done
 
-cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N
+cd /pub/kbogue1/GitHub/Data/polymer-c_data
 mkdir double.${d}
 
-for NumSeg in $(seq 455 455)
+for NumSeg in $(seq 350 350)
 do
-cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}
+cd /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}
 mkdir run.${what}.N${NumSeg}_${d}
 cd /pub/kbogue1/GitHub/polymer-c/src/PolymerCode
-cp metropolis.out parameters.txt ISEED /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}/run.${what}.N${NumSeg}_${d}
+cp metropolis.out parameters.txt ISEED /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
 cd /pub/kbogue1/GitHub/polymer-c/drivers
-cp submit.${what}.N${NumSeg}.${d}.sub /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}/run.${what}.N${NumSeg}_${d}
+cp submit.${what}.N${NumSeg}.${d}.sub /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
 cd /pub/kbogue1/GitHub/polymer-c/drivers
 rm submit.${what}.N${NumSeg}.${d}.sub
 done
 
-for NumSeg in $(seq 455 455)
+for NumSeg in $(seq 350 350)
 do
-cd /pub/kbogue1/GitHub/Data/polymer-c_data/tesing.big.N/double.${d}/run.${what}.N${NumSeg}_${d}
+cd /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
 sbatch submit.${what}.N${NumSeg}.${d}.sub
 done

@@ -203,7 +203,10 @@ void finalizeSummary()
                 dimerDist0, // 7
                 baseSepDistance);     // 8
 
-        // fprintf(fList, "\n");
+        fprintf(fList, "\n");
+        fprint(fList, "%f",NumberiSites);
+        fprintf(fList, "\n");
+
 
         // fprintf(fList, " %f %ld %ld %e",
         //         ree2Bar[0], //ree2Bar for the first filament 
