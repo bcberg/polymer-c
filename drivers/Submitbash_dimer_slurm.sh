@@ -8,9 +8,14 @@ d=$(date +%Y.%d.%m)
 NStart=218
 NStop=218
 
+# output directory
+output_dir=/pub/kbogue1/GitHub/Data/polymer-c_data/
+
+# dimerization state
+what='dimer' #'single' 'double'
+
 #Edit these parameters:
 for NumSeg in $(seq $NStart $NStop); do
-  what='dimer' #'single' 'double'
   NFil=2       #2
   #NumSeg=${i} #single=300; double=200; dimer=122
   if [ ${NFil} -eq 2 ]; then
@@ -28,25 +33,22 @@ for NumSeg in $(seq $NStart $NStop); do
   cp testslurm.sub submit.${what}.N${NumSeg}.${d}.sub
   sed -i "23c\ ./metropolis.out parameters.txt output_${what}.N${NumSeg}.iSite${iSite}.BSD${baseSepDist}.force${force}.kdimer${dimerForce}.txt 0 ${NFil} ${NumSeg} ${iSite} ${baseSepDist} ${force} ${dimerForce}
 " "submit.${what}.N${NumSeg}.${d}.sub"
-  sed -i "3c\#SBATCH --job-name=dimer_${NumSeg}      ## Name of the job.
+  sed -i "3c\#SBATCH --job-name=${what}_${NumSeg}      ## Name of the job.
 " "submit.${what}.N${NumSeg}.${d}.sub"
 done
 
-cd /pub/kbogue1/GitHub/Data/polymer-c_data
-mkdir dimer.${d}
+cd $output_dir
+mkdir ${what}.${d}
+cd -
 
 for NumSeg in $(seq $NStart $NStop); do
-  cd /pub/kbogue1/GitHub/Data/polymer-c_data/dimer.${d}
-  mkdir run.${what}.N${NumSeg}_${d}
-  cd /pub/kbogue1/GitHub/polymer-c/src/PolymerCode
-  cp metropolis.out parameters.txt ISEED /pub/kbogue1/GitHub/Data/polymer-c_data/dimer.${d}/run.${what}.N${NumSeg}_${d}
-  cd /pub/kbogue1/GitHub/polymer-c/drivers
-  cp submit.${what}.N${NumSeg}.${d}.sub /pub/kbogue1/GitHub/Data/polymer-c_data/dimer.${d}/run.${what}.N${NumSeg}_${d}
-  cd /pub/kbogue1/GitHub/polymer-c/drivers
+  mkdir $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
+  cp ../src/PolymerCode/metropolis.out ../src/PolymerCode/parameters.txt ../src/PolymerCode/ISEED $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
+  cp submit.${what}.N${NumSeg}.${d}.sub $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
   rm submit.${what}.N${NumSeg}.${d}.sub
 done
 
 for NumSeg in $(seq $NStart $NStop); do
-  cd /pub/kbogue1/GitHub/Data/polymer-c_data/dimer.${d}/run.${what}.N${NumSeg}_${d}
+  cd $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
   sbatch submit.${what}.N${NumSeg}.${d}.sub
 done
