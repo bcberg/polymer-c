@@ -40,12 +40,13 @@ done
 
 cd $output_dir
 mkdir double.${d}
+cd -
 
 for NumSeg in $(seq $NStart $NStop); do
   mkdir $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
-  cp src/PolymerCode/metropolis.out src/PolymerCode/parameters.txt src/PolymerCode/ISEED $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
-  cp drivers/submit.${what}.N${NumSeg}.${d}.sub $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
-  rm drivers/submit.${what}.N${NumSeg}.${d}.sub
+  cp ../src/PolymerCode/metropolis.out ../src/PolymerCode/parameters.txt ../src/PolymerCode/ISEED $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
+  cp submit.${what}.N${NumSeg}.${d}.sub $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
+  rm submit.${what}.N${NumSeg}.${d}.sub
 done
 
 for NumSeg in $(seq $NStart $NStop); do
