@@ -20,6 +20,14 @@
 
 ## Quickstart
 
+To run on UCI hpc3:
+
+* go to `polymer-c/src/PolymerCode`
+* `make`
+* In `drivers/testslurm.sub`, make sure the account name and e-mail address are correct.
+* In `drivers/Submitbash_single_slurm.sh`, make sure that `output_dir` is correct.
+* Run `sh Submitbash_single.sh`
+* Check your job with `squeue -u [yourusername]`.
 
 
 
