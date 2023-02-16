@@ -9,7 +9,7 @@ print(items)
 
 root = ET.Element("root")
 
-idStart = 6
+idStart = 2
 
 for id, item in enumerate(items):
     doc = ET.SubElement(root, "mxCell", id=str(id+idStart), value=item, style="rounded=1;whiteSpace=wrap;html=1;", vertex="1", parent="1")

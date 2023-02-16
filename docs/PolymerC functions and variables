@@ -1,0 +1,381 @@
+Command line: ./metropolis.out parameters.txt outputfile verboseTF NFil N iSite baseSepDist Force dimerForce
+argv[1]: parameters.txt
+argv[2]: outputfile
+argv[3]: verboseTF
+argv[4]: NFil
+argv[5]: N
+argv[6]: iSite
+argv[7]: baseSepDist
+argv[8]: Force
+argv[9]: dimerForce
+
+driveMetropolis.c
+    sets general global variables
+    runs scripts:
+        twister.c
+            functions:
+                init_genrand
+                    initializes state[NTWIST] with a seed
+                    input: unsigned long s
+                    no output
+                init_by_array
+                    initialize by an array with array-length
+                    input: unsigned long init_key[], int key_length
+                        init_key is the array for initializing keys
+                        key_length is its length 
+                    output: none
+                    runs functions:
+                        init_genrand
+                next_state
+                    checks if init_genrand has been called and if not, uses a default initial seed
+                    input: none 
+                    output: none
+                genrand_int32
+                    generates a random number on [0,0xffffffff]-interval
+                    input: none
+                    output: unsigned long; the random number
+                    runs functions:
+                        next_state
+                genrand_int31
+                    generates a random number on [0,0x7fffffff]-interval
+                    input: none
+                    output: long; the random number
+                    runs functions:
+                        next_state
+                genrand_real1
+                    generates a random number on [0,1]-real-interval
+                    input: none
+                    output: double; the random number
+                    runs functions:
+                        next_state
+                genrand_real2
+                    generates a random number on [0,1)-real-interval
+                    input: none
+                    output: double; the random number
+                    runs functions:
+                        next_state
+                genrand_real3
+                    generates a random number on (0,1)-real-interval
+                    input: none
+                    output: double; the random number
+                    runs functions:
+                        next_state
+                genrand_res53
+                    generates a random number on [0,1) with 53-bit resolution
+                    input: none
+                    output: double; the random number
+                    runs functions:
+                        genrand_int32
+                RanInit
+                    initialization; reads and writes to ISEED file
+                    input: int repeatable
+                    output: none
+                    runs functions:
+                        init_genrand
+                        genrand_int32
+                RanInitReturnIseed
+                    reads and writes to ISEED file; returns iseed
+                    input: int repeatable
+                    output: long; the iseed
+                    runs functions:
+                        init_genrand
+                        genrand_int32
+                printState
+                    write the state array to a file (stateFile) for resuming later
+                    input: char *stateFile
+                    output: none
+                loadState
+                    get state array from a file
+                    input: char *stateFile
+                    output: none
+        outputControl.c
+            sets global variables
+            functions:
+                initializeSummary
+                    initalizes summary variables
+                    inputs: none
+                    outputs: none
+                    Calls Variables:
+                        NFil
+                        BaseSepDistance
+                finalizeSummary
+                    finalizes summary statistics; where the format of the output file is determined
+                    inputs: none
+                    outputs: none
+                    Calls Variables:
+                        listName
+                        NFil
+                        irLigand
+                        brLigand
+                        baserLigand
+                        Force
+                        kdimer
+                        dimerDist0
+                        verboseTF
+                        occupiedSitesNoSpace
+                        localConcCutoff
+                dataRecording   
+                    Prepare stuff and optionally write to file - this function is called each timestep
+                    inputs: none
+                    outputs: none
+                    Calls Variables:
+                        listName
+                        NFil
+                        verboseTF
+                        localConcCutoff
+                        
+        getParameters.c
+            functions:
+                getParameters
+                    Reads file given in argv[1] (parameters.txt) and prints them in command line
+                    input: none 
+                    output: none
+                    Calls Variables:
+                        paramsFilename
+                    Files:
+                        parameters.txt
+                            sets a variety of parameters (including the bellow files) to variables
+                            Sets Variables:
+                                filamentFilename	
+                                    Files:
+                                        filaments.txt
+                                            contains list of filament sizes (number of entries is number of filaments)
+                                iSiteFilename
+                                    Files:
+                                		iSites.txt
+                                            contains list of iSite locations (number of entries is number of iSites; number of lines is number of filaments)
+                                bSiteFilename
+                                    Files:
+                                		bSites.txt
+                                            contains list of bSite locations (number of entries is number of bSites; number of lines is number of filaments)
+                                basicSiteFilename
+                                    Files:
+                                    	basicSites.txt
+                                            contains list of BasicSite locations (number of entries is number of BasicSites; number of lines is number of filaments)
+                                PhosElectroRange
+                                    Range of amino acids affected by phosphorylation potential
+                                StiffenRange
+                                    Range of segments that are locally stiffened
+                                listName
+                                    output file name
+                                    overriden if there is an argv[2]
+                                NFil
+                                    number of filaments
+                                    overriden if there is an argv[4]
+                                Ntemp
+                                    number of rods in each filament (filament length)
+                                    overriden if there is an argv[5]
+                                filamentInputMethod	
+                                    Method used in getFilaments to decide on filament number and length
+                                    0 - use identical filaments, number and length set from parameters.txt file or command line argument
+	                                1 - use command line input, set filaments in driveMet
+                                baseSepDistance	
+                                    Separation distance between base of filaments
+                                    overriden if there is an argv[7]
+                                irLigand		
+                                    Ligand radius measured in Kuhn lengths
+                                brLigand	
+                                    Bound ligand radius measured in Kuhn lengths	
+                                kBound		
+                                    bound ligand spring constant	
+                                baserLigand		
+                                    Radius of "Base" (sphere at base of filaments instead of membrane)
+                                Force		
+                                    Force pulling on ends of filaments
+                                    overriden if there is an argv[8]	
+                                kdimer		
+                                    Spring constant for ends of filaments	
+                                    overriden if there is an argv[9]
+                                dimerDist0	
+                                    Rest separation distance of filament ends	
+                                verboseTF		
+                                    Boolean setting if output is verbose or summary
+                                    overriden if there is an argv[3]
+                                iSiteInputMethod
+                                    Method used in getSites to decide where iSites are located
+                                    0 - iSites initialized for human CD3Zeta-Chain
+                                    1 - set identical filament single iSite - use command line input
+                                    2 - input iSites from file
+                                    3 - use last site as only iSite
+                                    4 - use every site as iSite
+                                stiffCase		
+                                    not used anymore
+                                occupiedSites	
+                                    String to determine which of the 6 CD3Zeta iSites are 'phosphorylated'
+                                occupiedSitesNoSpace 
+                                    String used in output to determine which CD3Zeta iSites are 'phosphorylated'	
+                                bSiteInputMethod
+                                    Method used in getSites to decide where bound sites are located
+                                    0 - two bound at same site
+                                    1 - do nothing, use command line input
+                                    2 - bSites for multiple binding of ZAP-70 to CD3 Zeta mouse
+                                    3 - from file
+                                    4 - use last site as only bSite
+                                parabolaDepth
+                                    Depth of basic residue well		
+                                parabolaWidth		
+                                    Width of basic residue well
+                                wallParabolaK	
+                                    Width of membrane barrier for regular residues	
+                                Erepulsion		
+                                    Strength of phosphorylated residue potential
+                                Zrepulsion	
+                                    Width of phosphorylated residue potential	
+                                localConcCutoff		
+                                    Distance where ligand is considered 'close enough' for local concentration calculation
+                                iSiteTemp	
+                                    location of the iSite
+                                    overriden if there is an argv[6]	
+        getSites.c
+            functions:
+                getSites
+                    creates number and location of iSites based on case
+                    creates number and location of bSites based on case
+                    input: none
+                    output: none
+                    Calls Variables:
+                        iSiteFilename
+                        bSiteFilename
+                        NFil
+                        iSiteInputMethod
+                        bSiteInputMethod
+                        iSiteTemp
+        initializeStiffSites.c
+            functions:
+                initializeStiffSites
+                    initializes all residues to not stiff then assigns stiff sites based on variable defined in parameters.txt
+                    input: none
+                    output: none
+                    Calls Variables:
+                        StiffenRange
+                        NFil
+        initializePhosphorylatedSites.c
+            functions:
+                initializePhosphorylatedSites
+                    initializes all residues to not phosphorylated then assigns phosporylated sites based on variable defined in parameters.txt
+                    input: none
+                    output: none
+                    Calls Variables:
+                        PhosElectroRange
+                        NFil
+        getBasicSites.c
+            functions:
+                getBasicSites
+                    creates number and location of BasicSites based input file
+                    input: none
+                    output: none
+                    Calls Variables:
+                        basicSiteFilename
+                        NFil
+                        
+        getFilaments.c
+            functions:
+                getFilaments
+                    creates number of filaments and length of filaments based on case
+                    input: none
+                    output: none
+                    Calls Variables:
+                        filamentFilename
+                        NFil
+                        Ntemp 
+                        filamentInputMethod
+        metropolisJoint.c
+            functions:
+                metropolisJoint
+                    runs metropolis algorithm
+                    input: none
+                    output: none
+                    runs functions:
+                        initializeStiffSites
+                        initializePhosphorylatedSites
+                        initializeSummary
+                        rotate
+                        appendBins
+                        stationarity
+                        dataRecording
+                        finalizeSummary
+                    Calls Variables:
+                        NFil
+                        baseSepDistance
+                        irLigand
+                        brLigand
+                        kBound
+                        baserLigand
+                        Force
+                        kdimer
+                        DimerDist0
+                        parabolaDepth
+                        parabolaWidth
+                        wallParabolaK
+                        Erepulsion
+                        Zrepulsion
+                stationarity
+                    Test for convergence
+                    input: none
+                    output: none
+                    runs functions:
+                        appendBins
+                    Calls Variables:
+                        NFil
+                appendBins
+                    Helper function needed to test for convergence
+                    input: none
+                    output: none
+                    Calls Variables:
+                        NFil
+                rotate
+                    rotates the orthogonal vectors tIn, e1In and e2In by angles (phiHere, thetaHere, psiHere) in their own frame of reference
+                    input: double *tIn, double *e1In, double *e2In, double *tOut, double *e1Out, double *e2Out, double phiHere, double thetaHere,double psiHere
+                    output: none
+
+    main
+        assigns variables based on command line arguments (will override getParameters):
+            paramsFilename
+                text file to set parameters
+                argument:
+                    argv[1]
+            listName
+                output filename
+                argument:
+                    argv[2]
+            verboseTF
+                Boolean setting if output is verbose or summary
+                argument:
+                    argv[3]
+            NFil
+                number of filaments
+                argument:
+                    argv[4]
+            Ntemp
+                filament length
+                argument:
+                    argv[5]
+            iSiteTemp
+                location of the iSite
+                argument:
+                    argv[6]
+            baseSepDistance
+                base separation distance
+                argument:
+                    argv[7]
+            Force
+                Force pulling on ends of filaments
+                argument:
+                    argv[8] 
+            kdimer
+                Spring constant for ends of filaments
+                argument:
+                    argv[9]
+        Calls Variables:
+            occupiedSites
+        runs functions:
+            getParameters 
+            getFilaments
+            getiSites
+            getBasicSites
+            RanInitReturnIseed
+            metropolisJoint
+        
+
+
+
