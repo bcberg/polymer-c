@@ -9,6 +9,11 @@ d=$(date +%Y.%d.%m.%T)
 NStart=350
 NStop=350
 
+# output directory
+output_dir=/pub/kbogue1/GitHub/Data/polymer-c_data/
+
+
+
 #Edit these parameters:
 for NumSeg in $(seq $NStart $NStop); do
   what='double' #'single' 'double'
@@ -33,21 +38,17 @@ for NumSeg in $(seq $NStart $NStop); do
 " "submit.${what}.N${NumSeg}.${d}.sub"
 done
 
-cd /pub/kbogue1/GitHub/Data/polymer-c_data
+cd $output_dir
 mkdir double.${d}
 
 for NumSeg in $(seq $NStart $NStop); do
-  cd /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}
-  mkdir run.${what}.N${NumSeg}_${d}
-  cd /pub/kbogue1/GitHub/polymer-c/src/PolymerCode
-  cp metropolis.out parameters.txt ISEED /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
-  cd /pub/kbogue1/GitHub/polymer-c/drivers
-  cp submit.${what}.N${NumSeg}.${d}.sub /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
-  cd /pub/kbogue1/GitHub/polymer-c/drivers
-  rm submit.${what}.N${NumSeg}.${d}.sub
+  mkdir $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
+  cp src/PolymerCode/metropolis.out src/PolymerCode/parameters.txt src/PolymerCode/ISEED $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
+  cp drivers/submit.${what}.N${NumSeg}.${d}.sub $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
+  rm drivers/submit.${what}.N${NumSeg}.${d}.sub
 done
 
 for NumSeg in $(seq $NStart $NStop); do
-  cd /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
+  cd $output_dir/double.${d}/run.${what}.N${NumSeg}_${d}
   sbatch submit.${what}.N${NumSeg}.${d}.sub
 done
