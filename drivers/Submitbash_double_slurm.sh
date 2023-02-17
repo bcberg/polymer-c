@@ -1,14 +1,14 @@
 #!/bin/bash
 #./metropolis.out parameters.txt outputfile verboseTF NFil N iSite baseSepDist Force dimerForce
 
-#d=`date +%Y.%d.%m`
+d=`date +%Y.%d.%m`
 #d='2023.15.01'
-d=`date +%Y.%d.%m.%T`
+#d=`date +%Y.%d.%m.%T`
 
 
 
 #Edit these parameters:
-for NumSeg in $(seq 350 350)
+for NumSeg in $(seq 401 600)
 do
 what='double' #'single' 'double'
 NFil=2 #2
@@ -38,7 +38,7 @@ done
 cd /pub/kbogue1/GitHub/Data/polymer-c_data
 mkdir double.${d}
 
-for NumSeg in $(seq 350 350)
+for NumSeg in $(seq 401 600)
 do
 cd /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}
 mkdir run.${what}.N${NumSeg}_${d}
@@ -50,7 +50,7 @@ cd /pub/kbogue1/GitHub/polymer-c/drivers
 rm submit.${what}.N${NumSeg}.${d}.sub
 done
 
-for NumSeg in $(seq 350 350)
+for NumSeg in $(seq 401 600)
 do
 cd /pub/kbogue1/GitHub/Data/polymer-c_data/double.${d}/run.${what}.N${NumSeg}_${d}
 sbatch submit.${what}.N${NumSeg}.${d}.sub
