@@ -2,54 +2,52 @@
 #./metropolis.out parameters.txt outputfile verboseTF NFil N iSite baseSepDist Force dimerForce
 
 #d=`date +%Y.%d.%m.%T`
-d=`date +%Y.%d.%m`
+d=$(date +%Y.%d.%m)
 #d='2023.14.01'
 
-#Edit these parameters:
-for NumSeg in $(seq 1 1)
-do
+# polymer number of segments to sweep over
+NStart=1
+NStop=1
+
+# output directory
+output_dir=/pub/kbogue1/GitHub/Data/polymer-c_data/
+
+# dimerization state
 what='single' #'single' 'double'
-NFil=1 #2
-#NumSeg=${i} #single=300; double=200; dimer=122
-if [ ${NFil} -eq 2 ]
-then
-	baseSepDist=16.667000
-else
-  baseSepDist=0
-fi;
-dimerForce=0 #10
-iSite='-1'
-force=0
-#
 
+#Edit these parameters:
+for NumSeg in $(seq $NStart $NStop); do
+  NFil=1        #2
+  #NumSeg=${i} #single=300; double=200; dimer=122
+  if [ ${NFil} -eq 2 ]; then
+    baseSepDist=16.667000
+  else
+    baseSepDist=0
+  fi
+  dimerForce=0 #10
+  iSite='-1'
+  force=0
+  #
 
+  #echo submit.${what}.N${NumSeg}.${d}.sh
 
-#echo submit.${what}.N${NumSeg}.${d}.sh
-
-cp testslurm.sub submit.${what}.N${NumSeg}.${d}.sub
-sed -i "23c\ ./metropolis.out parameters.txt output_${what}.N${NumSeg}.iSite${iSite}.BSD${baseSepDist}.force${force}.kdimer${dimerForce}.txt 0 ${NFil} ${NumSeg} ${iSite} ${baseSepDist} ${force} ${dimerForce}
+  cp testslurm.sub submit.${what}.N${NumSeg}.${d}.sub
+  sed -i "23c\ ./metropolis.out parameters.txt output_${what}.N${NumSeg}.iSite${iSite}.BSD${baseSepDist}.force${force}.kdimer${dimerForce}.txt 0 ${NFil} ${NumSeg} ${iSite} ${baseSepDist} ${force} ${dimerForce}
 " "submit.${what}.N${NumSeg}.${d}.sub"
-sed -i "3c\#SBATCH --job-name=single_${NumSeg}      ## Name of the job.
+  sed -i "3c\#SBATCH --job-name=${what}_${NumSeg}      ## Name of the job.
 " "submit.${what}.N${NumSeg}.${d}.sub"
 done
 
-cd /pub/kbogue1/GitHub/Data/polymer-c_data
-mkdir single.${d}
+mkdir $output_dir/${what}.${d}
 
-for NumSeg in $(seq 1 1)
-do
-cd /pub/kbogue1/GitHub/Data/polymer-c_data/single.${d}
-mkdir run.${what}.N${NumSeg}_${d}
-cd /pub/kbogue1/GitHub/polymer-c/src/PolymerCode
-cp metropolis.out parameters.txt ISEED /pub/kbogue1/GitHub/Data/polymer-c_data/single.${d}/run.${what}.N${NumSeg}_${d}
-cd /pub/kbogue1/GitHub/polymer-c/drivers
-cp submit.${what}.N${NumSeg}.${d}.sub /pub/kbogue1/GitHub/Data/polymer-c_data/single.${d}/run.${what}.N${NumSeg}_${d}
-cd /pub/kbogue1/GitHub/polymer-c/drivers
-rm submit.${what}.N${NumSeg}.${d}.sub
+for NumSeg in $(seq $NStart $NStop); do
+  mkdir $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
+  cp ../src/PolymerCode/metropolis.out ../src/PolymerCode/parameters.txt ../src/PolymerCode/ISEED $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
+  cp submit.${what}.N${NumSeg}.${d}.sub $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
+  rm submit.${what}.N${NumSeg}.${d}.sub
 done
 
-for NumSeg in $(seq 1 1)
-do
-cd /pub/kbogue1/GitHub/Data/polymer-c_data/single.${d}/run.${what}.N${NumSeg}_${d}
-sbatch submit.${what}.N${NumSeg}.${d}.sub
+for NumSeg in $(seq $NStart $NStop); do
+  cd $output_dir/${what}.${d}/run.${what}.N${NumSeg}_${d}
+  sbatch submit.${what}.N${NumSeg}.${d}.sub
 done
