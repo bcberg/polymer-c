@@ -1163,8 +1163,9 @@ void metropolisJoint()
             if (nt == 2*NTCHECK)
 				appendBins();
 			
-			if (nt == ntNextStationarityCheck)
+			if (nt == ntNextStationarityCheck) // This only happens every once in a while (logarithmically) 
 				stationarity();
+                finalizeSummary(0);
 		}
 		
         // output to time series file
@@ -1176,7 +1177,7 @@ void metropolisJoint()
 	} // done time loop
     
     // finalize summary statistics
-    finalizeSummary();
+    finalizeSummary(1);
 
 }
 
