@@ -1,7 +1,7 @@
 /*** Allard Group jun.allard@uci.edu                    ***/
 
 void initializeSummary();
-void finalizeSummary();
+void finalizeSummary(int reallyFinal);
 void dataRecording();
 
 /*******************************************************************************/
@@ -104,7 +104,7 @@ void initializeSummary()
 }
 
 /********************************************************************************************************/
-void finalizeSummary()
+void finalizeSummary(int reallyFinal)
 {
     // finalize summary statistics
     for(nf=0;nf<NFil;nf++)
@@ -185,7 +185,12 @@ void finalizeSummary()
 
     if (!verboseTF)
     {
-        fList = fopen(listName, "a");
+        if (reallyFinal == 1)
+            fList = fopen(listName, "a");
+        else
+            fList = fopen(liveListName, "a");
+
+
         // fprintf(fList, "%s %f", "Prvec0 at position 24:", Prvec0[0][24]);
         // fprintf(fList, "\n");
         // fprintf(fList, "%s %f", "Prvec0 at position 43:", Prvec0[0][43]);

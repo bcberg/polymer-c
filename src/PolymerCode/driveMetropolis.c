@@ -41,6 +41,9 @@
 /* General Global Variables */
 char listName[100];
 FILE *fList;
+
+char liveListName[100];
+
 //
 char paramsFilename[100], filamentFilename[100], iSiteFilename[100], bSiteFilename[100], basicSiteFilename[100];
 FILE *paramsFile, *filList, *iSiteList, *bSiteList, *basicSiteList;
@@ -172,6 +175,11 @@ int main( int argc, char *argv[] )
         if(atoi(argv[2])!=-1)
             strcpy(listName,argv[2]);
         if (TALKATIVE) printf("This is the output filename: %s\n", listName);
+        strcat(liveListName, "live_");
+        strcat(liveListName, listName);
+ 
+        if (TALKATIVE) printf("This is the liveoutput filename: %s\n", listName);
+
     }
 
     if(argv[3])
