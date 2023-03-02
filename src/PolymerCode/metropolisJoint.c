@@ -1164,9 +1164,11 @@ void metropolisJoint()
 				appendBins();
 			
 			if (nt == ntNextStationarityCheck) // This only happens every once in a while (logarithmically) 
-				stationarity();
+			{
+            	stationarity();
                 finalizeSummary(0);
-		}
+            }
+        }
 		
         // output to time series file
 		dataRecording();
