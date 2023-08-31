@@ -37,6 +37,7 @@ function output_struct = getOutputControl(input_fname,saveTF,NameValueArgs)
     %                                       (deafult="/tmp/")
     %   note: it is assumed that nt is the first entry
     %   Output is the struct object
+    %   See also MAKELOOKUPMAT
 arguments
     input_fname string
     saveTF {mustBeNumericOrLogical}=0
@@ -53,7 +54,7 @@ end
     % create temp files
     command = sprintf('tail -r %s | awk ''!flag; /nt/{flag = 1};'' | tail -r | sort > "%s.sorted"', full_input_file,full_temp_file); % gets last output (for live scripts) and sorts lines
     system(command);
-    command = sprintf( 'sed ''s/\\[[^]]*\\]//g'' %s.sorted > %s.sorted.nosquare', full_input_file, full_temp_file); % removes brackets []
+    command = sprintf( 'sed ''s/\\[[^]]*\\]//g'' %s.sorted > %s.sorted.nosquare', full_temp_file, full_temp_file); % removes brackets []
     system(command);
     
     
@@ -69,6 +70,7 @@ end
     % temporary storage for a particular key while it's being filled
     matrix_during_filling = zeros(MAXDIM,MAXDIM);
     
+    %disp(fgetl(fileID))
     tline = strtrim(fgetl(fileID));
     while ischar(tline)
         is_unread_line = 1; 
@@ -144,6 +146,16 @@ end
         end
     
     end
+    if output_struct.NFil==1
+        output_struct.type="single";
+    elseif output_struct.NFil==2
+        if output_struct.kdimer==0
+            output_struct.type="double";
+        else
+            output_struct.type="dimer";
+        end
+    end
+
     fclose(fileID);
     
     if saveTF

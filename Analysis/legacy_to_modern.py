@@ -10,17 +10,21 @@ OutputControl.c to the modern output format. Note that the script assumes the
 legacy output format in the master branch of katiebogue/polymer-c as of 
 8/28/23. 
 
-arguments for main:
+command line arguments:
     input_filename - name of the legacy output file to convert
     output_filename - name of the new output file with modern format to generate 
     NiSite - the number of amino acids in the simulated run
 
 """
 
+from sys import argv
+
 def convert_format(input_filename, output_filename, NiSite):
     with open(input_filename, 'r') as input_file, open(output_filename, 'w') as output_file:
         line = input_file.readline().strip()  # Read the single line and remove leading/trailing whitespace
         values = line.split()  # Split the line into individual values
+        
+        NiSite=int(NiSite)
                 
         # Extract data based on legacy OutputControl
         nt = int(values[0])
@@ -45,7 +49,7 @@ def convert_format(input_filename, output_filename, NiSite):
         output_file.write(f"dimerDist0 {dimerDist0}\n")
         output_file.write(f"baseSepDistance {baseSepDistance}\n")
         
-        NumberiSites= NiSite * NFil
+        NumberiSites= int(NiSite * NFil)
         iSiteTotal=NiSite
         
         for j in range(NumberiSites + 1):
@@ -110,5 +114,7 @@ def convert_format(input_filename, output_filename, NiSite):
                 index+=1
             
             nfi +=1
+            
+convert_format(argv[1], argv[2], argv[3])
 
 
