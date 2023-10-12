@@ -10,7 +10,7 @@ NStart=1
 NStop=1
 
 # output directory
-output_dir=/pub/kbogue1/GitHub/Data/polymer-c_data/
+output_dir=/pub/bberg1/projects/polymer-c/
 
 # dimerization state
 what='single' #'single' 'double'
